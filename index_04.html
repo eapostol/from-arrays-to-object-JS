@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How Arrays Evolved into Objects - Part 04: Creating ES5 "Objects"</title>
+    <script>
+        // So how can someone create "real" objects in JavaScript?
+        // well, here is *one* technique. Note that there are multiple "techniques" in the ES5 JavaScript world.
+        // Choosing one is a matter of taste, and who you are working with - performance wise, it may have practical
+        // implications, but you can check that out for yourself.
+
+        /* A 'canonical' method of creating objects from scratch is to use the function as an object.
+        *   Create a function as follows: */
+        function Person( name, height, age, weight ) {
+                // notice the usage of the word 'this'. this means -this...object (which is a 'Person')-
+                this.name = name;
+                this.height = height;
+                this.age = age;
+                this.weight = weight;
+                this.jump = function(howHigh){
+                    alert(this.name + ' has jumped ' + howHigh + ' meters high!');
+                }
+        }
+
+        /* Once you create a function, you can create a new instance of it like so. Notice the usage of the word 'new'
+        *   here, as in 'I am creating an instance of a -new- Person, with these parameters ...*/
+        var personOne = new Person('Edward',181,35,190);
+        var personTwo = new Person('Michelle',170,33,150); // it looks pretty readable.
+
+        /* After you have created the Person object, you can use the -instance- of the Person object like so */
+        console.log("Person One's name is " + personOne.name);
+        console.log("Person Two's name is " + personTwo.name + " she is " + personTwo.age + " years old ");
+
+        // onClick of the document, let's make personOne 'jump'
+        window.addEventListener("click", function() { personOne.jump(35) }  );
+        /* kinda cheating here - in the above statement, I said 'listen to the click event of the window, and run
+        *   a function that will tell personOne to Jump 35 whatever units...*/
+
+        // now, making instances of people 'looks' easier.
+        var hereIsAnArrayofPeopleWithData = [
+            ['Edward', 181, 35, 190 ],
+            ['Sam', 170, 34, 201 ],
+            ['Tyler', 191, 47, 185 ],
+            ['Jane', 170, 37, 145, ]
+        ];
+        var counter1 = 0;
+        var allPeople = [];
+        for (counter1; counter1 < hereIsAnArrayofPeopleWithData.length; counter1++){
+            var tempPerson = new Person(); // notice I didn't fill in any values. so this person has null values for
+            // it's properties, as well as a jump() method)
+            tempPerson.name = hereIsAnArrayofPeopleWithData[counter1][0];
+            tempPerson.height = hereIsAnArrayofPeopleWithData[counter1][1];
+            tempPerson.age = hereIsAnArrayofPeopleWithData[counter1][2];
+            tempPerson.weight = hereIsAnArrayofPeopleWithData[counter1][3];
+            allPeople.push(tempPerson); // add the temporary person to the allPeople array, and loop around again.
+        }
+
+        // now let's find out some information about the people!
+        console.log(allPeople); // print out all the people
+        var firstPerson = allPeople[0]; // let's get the first person
+        var secondPerson = allPeople[1];
+
+
+        console.log('the first person is ' + firstPerson.name ); // easy peasy! you can also do firstPerson['name']
+        console.log('the second person is ' + secondPerson.name);
+
+        // due to the origins of objects as just arrays with labels for the index values.
+        /* let's make the first person jump , onClick of that button that was in the body of the document...
+        // notice I did NOT use an onclick attribute in the HTML tag for the button, I wrote code in Javascript
+        // that told the button to listen to it's click event!
+        */
+        document.addEventListener("load", function()
+                            {
+                            theButton.addEventListener("click", function()
+                                                                {
+                                                                    firstPerson.jump(25) ;
+                                                                } );
+                            } );
+
+        /* Note that the above technique is written kinda messy. You'll get used to it with enough exploration
+        * of JQuery lol . There are neater ways to write this (like refactoring the functions) but that is another
+        * story...  AND THERE YOU HAVE IT */
+
+    </script>
+</head>
+<body>
+<h1>How Arrays Evolved into Objects - Part 04: Creating ES5 "Objects"</h1><br><br>
+    <button id="theButton">click me at the end of the demo...</button>
+
+
+</body>
+</html>

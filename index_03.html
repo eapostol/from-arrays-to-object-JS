@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How Arrays Evolved into Objects - Part 03: From Arrays into Simple "Objects"</title>
+    <script>
+        /* Sooo... we can describe a "person" in terms of an Object object, instead of using arrays.
+        * For example...
+        * */
+        var aPerson = {}; // defines an empty object with a variable labelled 'aPerson'
+        aPerson.name = "Edward"; // note we use dot notation here to assign 'properties' to the aPerson object with values
+        aPerson.height = 181; // these properties can store any type of value, like a number.
+        aPerson.age = 35;
+        aPerson.weight = 190;
+        aPerson.jump = function(event){
+            window.alert(aPerson.name + ' can jump ' + (event.x / 10) + ' feet high!');
+        }; // look! I can store a function here as a 'property' of the aPerson object. it becomes a -method- of aPerson.
+        // e.g. aPerson can 'jump()' and you can pass a value indicating how high;
+
+        /* also look - and here's the bridge - you can use the older hash notation to still assign 'properties' to
+        * the values of an object */
+        aPerson['lastName'] = 'Apostol';
+        aPerson.lastName = "Apostol"; // same thing
+
+        console.log('I added a new property to the aPerson Object. the last name is ', aPerson.lastName); // prints 'Apostol'
+        console.log("aPerson's age is ", aPerson.age); // prints 35
+        // and watch Edward 'jump'
+        window.addEventListener('click', aPerson.jump); // see how it 'aPerson' performs the 'jump()' method
+
+        // I could create a second person, like the first...
+        var aPerson02 = {}; // defines an empty object with a variable labelled 'aPerson'
+        aPerson02.name = "Michelle"; // note we use dot notation here to assign 'properties' to the aPerson object with values
+        aPerson02.height = 181; // these properties can store any type of value, like a number.
+        aPerson02.age = 33;
+        aPerson02.weight = 150;
+        aPerson02.jump = function(howHigh){
+            // notice I introduced the concept of 'this' here
+            window.alert( aPerson02.name + ' can jump' + howHigh + ' feet high!' + ' hair color = ' + aPerson02.hairColor);
+        };
+        aPerson02.hairColor = 'red';
+
+        console.log('aPerson: hairColor ' , aPerson.hairColor);
+        console.log('aPerson02: hairColor ', aPerson02.hairColor);
+
+
+        /* BUT CREATING MANY PEOPLE WILL BE A LITTLE BIT of a PAIN
+        * I could create a loop like in the previous examples, it -could- look like this.
+        * */
+        // again with the arrays! why? arggh.
+        var peopleCharacteristics = ['name','height','age','weight','jump'];
+        var hereIsAnArrayofPeopleWithData = [
+            ['Edward', 181, 35, 190, function(howHigh){ console.log(' jumping ' + howHigh + ' ft high'); }],
+            ['Sam', 170, 34, 201, function(howHigh){ console.log(' jumping ' + howHigh + ' ft high'); }],
+            ['Tyler', 191, 47, 185, function(howHigh){ console.log(' jumping ' + howHigh + ' ft high'); }],
+            ['Jane', 170, 37, 145, function(howHigh){ console.log(' jumping ' + howHigh + ' ft high'); }]
+        ];
+        // uhhh. boy that function looks awkward...
+        // i could do something like this ...
+        var jumpFn = function(howHigh){
+            console.log(' jumping ' + howHigh + ' ft high');
+        };
+        // then add a new person like so...
+        hereIsAnArrayofPeopleWithData.push(['Veronica', 163, 23, 130, jumpFn]); // a little cleaner...but
+        // look at all this code below.
+        console.log(hereIsAnArrayofPeopleWithData[4]);
+        console.log('Veronica...Jump!');
+        console.log( (hereIsAnArrayofPeopleWithData[4][4])(999) );// <-- well I got myself into a pickle here lol
+
+        var allPeople = [];
+        var counter = 0, numberOfCharacteristics = peopleCharacteristics.length;
+        var numberOfPeople = hereIsAnArrayofPeopleWithData.length;
+
+        for (counter; counter<numberOfPeople; counter++){
+            // an array that will hold our new person (also clears the person from the previous loop iteration
+            var temporaryPerson = [];
+            var counter2 = 0;
+            for(counter2; counter2<numberOfCharacteristics; counter2++){
+                temporaryPerson[peopleCharacteristics[counter2]] = hereIsAnArrayofPeopleWithData[counter][counter2];
+                // this is saying temporaryPerson['name'] = 'Edward' the first time around
+                // then temporaryPerson['height'] = 181 the second time in this inner loop , etc.
+            }
+
+            allPeople.push(temporaryPerson); // this adds the temporary person to the allPeople array
+            // then we start with the next iteration of the outer loop
+        }
+        console.log('all people is \n', allPeople);
+        // let's extract a single person...
+        var fourthPerson = allPeople[4]; // remember this is the fifth person ! count from zero
+        console.log('**** information about the fifth person ****');
+        console.log(fourthPerson.name);
+        console.log(fourthPerson.height);
+        console.log(fourthPerson.age);
+        console.log(fourthPerson.weight);
+        console.log(fourthPerson.jump(23));
+        console.log('**** end information about the fifth person ****');
+        // Honestly , we didn't save much process wise, we still had to use array notation to create a bunch of people.
+        // THERE HAS TO BE A BETTER WAY
+
+
+    </script>
+</head>
+<body>
+    <h1>How Arrays Evolved into Objects - Part 03: From Arrays into Simple "Objects"</h1><br><br>
+    <h2>click this window to witness aPerson invoke their jump() method...</h2>
+</body>
+</html>

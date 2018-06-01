@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How Arrays Evolved into Objects - Part 01. Just Arrays.</title>
+    <script>
+        // back in the day... we had arrays.
+        var hereIsAnArray = ['Edward','Sam','Tyler','Jane'];
+        /* we can reference elements in the array using an array's
+         * -index- . For example */
+        var theSecondPerson = hereIsAnArray[1];
+        console.log('the second person is ' + theSecondPerson);
+
+        /* but later, we wanted to 'store' more complex information about each
+         * item (e.g. a person) in an array. like height, weight, age, hobbies, etc. */
+        // so we could do it like this. An "array of arrays"
+        var hereIsAnArrayofPeopleWithData = [
+            ['Edward', 181, 35, 190],
+            ['Sam', 170, 34, 201],
+            ['Tyler', 191, 47, 185],
+            ['Jane', 170, 37, 145]
+        ];
+        /* where each item in '﻿hereIsAnArrayofPeopleWithData' was -itself-
+         * an array, which element in that array was information about a person
+          * whose first index position was name, 2nd was height (in cm), 3rd - age,
+          * and 4th was weight (in lb, because old school) */
+        console.log('the original array', hereIsAnArrayofPeopleWithData);
+
+        /* but how did we know which characteristic of each person array was the
+        * 'name', 'age', 'weight' or whatever?
+        * we could create an array like this...
+        * */
+        var peopleCharacteristics = ['name','height','age','weight'];
+        /* ...and then associate the hereIsAnArrayofPeopleWithData array with
+        *  the peopleCharacteristics array like this ...*/
+        var personOne = [
+            [ peopleCharacteristics[0],hereIsAnArrayofPeopleWithData[0][0] ],
+            [ peopleCharacteristics[1],hereIsAnArrayofPeopleWithData[0][1] ],
+            [ peopleCharacteristics[2],hereIsAnArrayofPeopleWithData[0][2] ],
+            [ peopleCharacteristics[3],hereIsAnArrayofPeopleWithData[0][3] ],
+        ];
+        console.log('personOne is ', personOne);
+        console.log('personOne, their weight is ', personOne[3][1]); // 3 - weight trait. 1 - is the value
+
+        /* then I could repeat it for the second person, like so... */
+        var personTwo = [
+            [ peopleCharacteristics[0],hereIsAnArrayofPeopleWithData[1][0] ],
+            [ peopleCharacteristics[1],hereIsAnArrayofPeopleWithData[1][1] ],
+            [ peopleCharacteristics[2],hereIsAnArrayofPeopleWithData[1][2] ],
+            [ peopleCharacteristics[3],hereIsAnArrayofPeopleWithData[1][3] ],
+        ];
+        console.log('personTwo is ... ', personTwo);
+        /* but what if I had a -classroom-'s worth of students? That's a lot
+        * variables! I could create a bunch of player data. Let's add a few more
+         * people... */
+        hereIsAnArrayofPeopleWithData.push(['Emma', 163, 32, 130]);
+        hereIsAnArrayofPeopleWithData.push(['Zoey', 135, 25, 121]);
+        hereIsAnArrayofPeopleWithData.push(['Veronica', 175, 25, 140]);
+        /*
+        * recall: push is a method of arrays. here we are pushing new array objects
+        * into the existing hereIsAnArrayofPeopleWithData array.
+        * */
+        console.log('now the hereIsAnArrayofPeopleWithData is filled like this ',
+            hereIsAnArrayofPeopleWithData);
+        /* Now, I can create a loop that goes through the hereIsAnArrayofPeopleWithData
+        *  and from here, I can create an array that contains people with a complex set
+        *  of characteristics... */
+        var counter = 0;
+        var currentNumberOfPeople = hereIsAnArrayofPeopleWithData.length;
+        var propertyCounter = 0;
+        var numberOfProperties = peopleCharacteristics.length;
+        var arrayWithComplexPeopleData = [];
+
+        // first, we loop through the total number of people...
+        function createPeopleWithTraits(arrayWithComplexPeopleData){
+            for (counter; counter<currentNumberOfPeople; counter++){
+                // then we loop through all the characteristics of each person...
+                var tempNewPerson = [];
+                for (propertyCounter; propertyCounter<numberOfProperties; propertyCounter++) {
+                    // peopleCharacteristics[propertyCounter] = 'name'
+                    // hereIsAnArrayofPeopleWithData[counter][propertyCounter] = 'Sam',
+                    // 2nd time around
+                    // peopleCharacteristics[1] = 'height'
+                    // hereIsAnArrayofPeopleWithData[counter][propertyCounter] = 170,
+                    // 3rd time around
+                    // peopleCharacteristics[2] = 'age'
+                    // hereIsAnArrayofPeopleWithData[counter][propertyCounter] = 34,
+                    // 3rd time around
+                    // peopleCharacteristics[3] = 'weight'
+                    // hereIsAnArrayofPeopleWithData[counter][propertyCounter] = 201,
+                    tempNewPerson.push(
+                        [
+                            peopleCharacteristics[propertyCounter], hereIsAnArrayofPeopleWithData[counter][propertyCounter]
+                        ]
+                    );
+                }
+                arrayWithComplexPeopleData.push(tempNewPerson);
+                propertyCounter = 0; // reset the inner counter
+            }
+            return arrayWithComplexPeopleData;
+        }
+        // this results in the following , rather complex, array. Each element represents a "person"
+        // that has several "traits / "characteristics" with values;
+        var results = createPeopleWithTraits(arrayWithComplexPeopleData);
+
+        console.log('array with complexPeopleData is ', results);
+
+        /* If I wanted to obtain a characteristic of a person, for example, Edward's name, I would have to say something
+         * like this */
+        console.log('characteristic / trait -  ' +
+            results[0][0][0] +
+            ' value: ' + results[0][0][1]);
+        // another characteristic for Edward would be referenced like so...
+        console.log('characteristic / trait -  ' +
+            results[0][2][0] +
+            ' value: ' + results[0][2][1]);
+        /* which is complex and messy after awhile if you needed to use this process many times over,
+         * just trying to keep track of the numbers... */
+
+        /* THERE HAD TO BE A BETTER WAY. */
+
+
+    </script>
+</head>
+<body>
+<h1>How Arrays Evolved into Objects - Part 01. Just Arrays.</h1>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How Arrays Evolved into Objects - Part 02: Hashed or Associated Arrays...</title>
+    <script>
+        /* then someone came up with an idea. why don't we used 'named' index values in JavaScript?
+        *  something like this... */
+        var personOne = [];
+        // instead of a numeric index, we can used a 'label' for an index.
+        personOne['firstName'] = 'Edward';
+        personOne['height'] = 181;
+        personOne['age'] = 35;
+        personOne['weight'] = 190; // notice we can store numbers as well.
+        console.log('personOne looks like this -', personOne);
+
+        /* this would make creating complex structures of data (like people) easier to manage.
+            for example the following loop could be used to create a bunch of people
+         */
+
+        var peopleCharacteristics = ['name','height','age','weight'];
+        var hereIsAnArrayofPeopleWithData = [
+            ['Edward', 181, 35, 190],
+            ['Sam', 170, 34, 201],
+            ['Tyler', 191, 47, 185],
+            ['Jane', 170, 37, 145]
+        ];
+        var allPeople = [];
+        var counter = 0, numberOfCharacteristics = peopleCharacteristics.length;
+        var numberOfPeople = hereIsAnArrayofPeopleWithData.length;
+
+        for (counter; counter<numberOfPeople; counter++){
+            // an array that will hold our new person (also clears the person from the previous loop iteration
+            var temporaryPerson = [];
+            // var counter2 = 0;
+            for(var counter2 = 0; counter2<numberOfCharacteristics; counter2++){
+                temporaryPerson[peopleCharacteristics[counter2]] = hereIsAnArrayofPeopleWithData[counter][counter2];
+                // this is saying temporaryPerson['name'] = 'Edward' the first time around
+                // then temporaryPerson['height'] = 181 the second time in this inner loop , etc.
+            }
+
+            allPeople.push(temporaryPerson); // this adds the temporary person to the allPeople array
+            // then we start with the next iteration of the outer loop
+        }
+        console.log('all people is \n', allPeople);
+        var person03 = allPeople[2];
+        console.log(person03['name']+ ' is '+ person03['age'] + ' years old');
+
+        /* but it prints out a little weirdly... THERE IS PROBABLY A BETTER WAY */
+
+    </script>
+</head>
+<body>
+<h1>How Arrays Evolved into Objects - Part 02: Hashed or Associated Arrays...</h1>
+</body>
+</html>
